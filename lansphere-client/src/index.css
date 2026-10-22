@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 20% 97%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 238 84% 59%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222 47% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222 47% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 238 84% 59%;
+    --radius: 0.85rem;
+  }
+
+  .dark {
+    --background: 224 35% 8%;
+    --foreground: 210 40% 98%;
+    --card: 224 32% 11%;
+    --card-foreground: 210 40% 98%;
+    --popover: 224 32% 11%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 238 84% 65%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 223 25% 18%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 223 25% 16%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 223 25% 18%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 223 25% 18%;
+    --input: 223 25% 18%;
+    --ring: 238 84% 65%;
+  }
+}
+
+* {
+  border-color: hsl(var(--border));
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+}
+
+code, pre {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Glassmorphism utility classes */
+.glass-panel {
+  background: hsla(var(--card) / 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid hsla(var(--border) / 0.6);
+}
+
+.glass-panel-subtle {
+  background: hsla(var(--card) / 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid hsla(var(--border) / 0.4);
+}
+
+/* Custom modern scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.25);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.45);
+}
