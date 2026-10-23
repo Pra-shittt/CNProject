@@ -10,5 +10,8 @@ import com.lansphere.service.ChatService;
 public class NetworkChatRelay {
     private final TcpSocketEngine tcp; private final ChatService chats;
     public NetworkChatRelay(TcpSocketEngine tcp, ChatService chats) { this.tcp = tcp; this.chats = chats; }
-    @PostConstruct public void initialize() { tcp.register(PacketType.CHAT, (packet, source) -> chats.receiveNetworkMessage(packet.getSender(), packet.getPayload())); }
+    @PostConstruct public void initialize() {
+        tcp.register(PacketType.CHAT, (packet, source) ->
+                chats.receiveNetworkMessage(packet.getSender(), packet.getReceiver(), packet.getPayload()));
+    }
 }

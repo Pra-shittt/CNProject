@@ -210,14 +210,25 @@ public class ChatService {
 
     /** Persists a TCP-delivered chat envelope after validating the local conversation and sender. */
     @Transactional
-    public void receiveNetworkMessage(String senderUsername, byte[] payload) {
+    public void receiveNetworkMessage(String senderUsername, String receiverUsername, byte[] payload) {
         String[] fields = new String(payload, StandardCharsets.UTF_8).split("\u001F", 3);
         if (fields.length != 3) throw new IllegalArgumentException("Invalid network chat envelope");
-        Long conversationId = Long.valueOf(fields[0]);
         User sender = userRepository.findByUsername(senderUsername)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "username", senderUsername));
+        User receiver = userRepository.findByUsername(receiverUsername)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "username", receiverUsername));
+        Long conversationId;
+        try {
+            conversationId = Long.valueOf(fields[0]);
+        } catch (NumberFormatException exception) {
+            throw new IllegalArgumentException("Invalid network chat conversation id", exception);
+        }
         Conversation conversation = conversationRepository.findById(conversationId)
                 .orElseThrow(() -> new ResourceNotFoundException("Conversation", "id", conversationId));
+        if (participantRepository.findByConversationIdAndUserId(conversationId, sender.getId()).isEmpty()
+                || participantRepository.findByConversationIdAndUserId(conversationId, receiver.getId()).isEmpty()) {
+            throw new IllegalArgumentException("Network chat participants do not belong to the conversation");
+        }
         MessageType type = MessageType.valueOf(fields[1]);
         Message message = messageRepository.save(Message.builder().content(fields[2]).type(type).status(MessageStatus.DELIVERED)
                 .sender(sender).conversation(conversation).isEdited(false).build());
